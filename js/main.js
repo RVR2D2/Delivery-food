@@ -21,6 +21,7 @@ const buttonOut = document.querySelector('.button-out');
 let login = localStorage.getItem('vrDelivery');
 
 function toggleModalAuth() {
+	loginInput.style.borderColor = '';
 	modalAuth.classList.toggle('is-open');
 
 }
@@ -54,10 +55,10 @@ function notAuthorized() {
 	console.log('Не авторизован');
 
 	function logIn(event) {
-		console.log(event);
 		event.preventDefault();
-		login = loginInput.value;
 
+		if(loginInput.value){
+		login = loginInput.value;	
 		localStorage.setItem('vrDelivery', login);
 		toggleModalAuth();
 		buttonAuth.removeEventListener('click', toggleModalAuth);
@@ -65,7 +66,9 @@ function notAuthorized() {
 		logInForm.removeEventListener('submit', logIn)
 		logInForm.reset();
 		checkAuth();
-		alert('Вы не авторизованы!');
+	} else {
+		loginInput.style.borderColor = ' red';
+		}
 	}
 
 	buttonAuth.addEventListener('click', toggleModalAuth);
