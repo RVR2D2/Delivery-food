@@ -15,7 +15,11 @@ const containerPromo = document.querySelector('.container-promo');
 const restaurants = document.querySelector('.restaurants');
 const menu = document.querySelector('.menu');
 const logo = document.querySelector('.logo');
-const cardsMenu = document.querySelector('.cards-menu');
+const cardsMenu = document.querySelector('.cards-menu')
+const restaurantTitle = document.querySelector('.restaurant-title');
+const rating = document.querySelector('.rating');
+const minPrice = document.querySelector('.price');
+const category = document.querySelector('.category');
 
 let login = localStorage.getItem('vrDelivery');
 
@@ -118,7 +122,9 @@ function createCardRestaurant(	 {
 
 
 	const card =  `
-		<a class="card card-restaurant" data-products="${products}">
+		<a class="card card-restaurant" 
+		data-products="${products}"
+		data-info="${[name, price, stars, kitchen]}">
 						<img src="${image}" alt="image" class="card-image"/>
 						<div class="card-text">
 							<div class="card-heading">
@@ -168,25 +174,32 @@ function createCardGood({ description, image, name, price }) {
 	cardsMenu.insertAdjacentElement('beforeend', card);
 }
 
-function openGoods(event){
-
-const target = event.target;
-
-const restaurant = target.closest('.card-restaurant');
-
-if(restaurant) {
-
+function openGoods(event) {
+	const target = event.target;
 	if(login) {
-		cardsMenu.textContent = '';
-		containerPromo.classList.add('hide');
-		restaurants.classList.add('hide');
-		menu.classList.remove('hide');
+
+		const restaurant = target.closest('.card-restaurant');
+		if(restaurant) {
+
+			const info = restaurant.dataset.info.split(',');
+			const [name, price, stars, kitchen] = info;
+
+			cardsMenu.textContent = '';
+			containerPromo.classList.add('hide');
+			restaurants.classList.add('hide');
+			menu.classList.remove('hide');
+
+			restaurantTitle.textContent = name;
+			rating.textContent = stars;
+			minPrice.textContent =`От ${price} ₽`; 
+			category.textContent = kitchen;
+
 			getData(`./db/${restaurant.dataset.products}`).then(function(data){
-			data.forEach(createCardGood);
-		});
-		} else {
-			toggleModalAuth();
+				data.forEach(createCardGood);
+			});
 		}
+	} else {
+		toggleModalAuth();
 	}
 }
 
