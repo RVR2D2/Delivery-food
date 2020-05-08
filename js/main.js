@@ -29,6 +29,19 @@ let login = localStorage.getItem('vrDelivery');
 
 const cart = [];
 
+const loadCart = function() {
+	if(localStorage.getItem(login)) {	
+	JSON.parse(localStorage.getItem(login)).forEach(function(item) {
+		cart.push(item);
+	})
+	}
+}
+
+const saveCart = function() {
+	localStorage.setItem(login, JSON.stringify(cart))
+}
+
+
 
 const getData = async function(url) {
 
@@ -61,6 +74,7 @@ function authorized() {
 
 	function logOut(){
 		login = null;
+		cart.length = 0;
 		localStorage.removeItem('vrDelivery');
 		buttonAuth.style.display = '';
 		userName.style.display = '';
@@ -72,15 +86,13 @@ function authorized() {
 	}
 
 	console.log('Авторизован');
-
 	userName.textContent = login;
-
 	buttonAuth.style.display = 'none';
 	userName.style.display = 'inline';
 	buttonOut.style.display = 'flex';
 	cartButton.style.display = 'flex';
-
 	buttonOut.addEventListener('click', logOut)
+	loadCart();
 }
 
 function notAuthorized() {
@@ -237,6 +249,7 @@ function addToCart(event) {
 		});
 		}
 	}
+	saveCart();
 }
 
 function renderCart(){
@@ -282,6 +295,7 @@ function changeCount(event) {
 	if (target.classList.contains('counter-plus'))food.count++;
 		renderCart();
 	}
+	saveCart();
 }
 
 function init() {
