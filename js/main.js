@@ -175,7 +175,7 @@ function createCardGood({ description, image, name, price, id }) {
 									<span class="button-card-text">В корзину</span>
 									<span class="button-cart-svg"></span>
 								</button>
-								<strong class="card-price-bold">${price} ₽</strong>
+								<strong class="card-price card-price-bold">${price} ₽</strong>
 							</div>
 						</div>
 	`);
@@ -219,7 +219,7 @@ function addToCart(event) {
 	if(buttonAddToCart) {
 		const card = target.closest('.card');
 		const title = card.querySelector('.card-title-reg').textContent;
-		const cost = card.querySelector('.card-price');
+		const cost = card.querySelector('.card-price').textContent;
 		const id = buttonAddToCart.id;
 
 		const food = cart.find(function(item){
